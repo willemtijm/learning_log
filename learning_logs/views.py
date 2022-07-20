@@ -59,7 +59,10 @@ def edit_entry(request, entry_id):
     """Edit an existing entry for a particular topic."""
     entry = Entry.objects.get(id=entry_id)
     topic = entry.topic
-    
+    print("Topic:" + str(topic))
+    print("Topic ID:" + str(topic.id))
+    print("Topic date added:" + str(topic.date_added))
+        
     if request.method != 'POST':
         # Initial request; pre-fill form with current entry.
         form = EntryForm(instance=entry)
@@ -68,6 +71,7 @@ def edit_entry(request, entry_id):
         form = EntryForm(instance=entry, data=request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id]))
+            #return HttpResponseRedirect(reverse('learning_logs:topics'))
+            return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic.id]))
     context = {'entry': entry, 'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_entry.html', context)
